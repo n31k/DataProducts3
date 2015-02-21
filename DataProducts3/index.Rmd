@@ -1,0 +1,54 @@
+---
+title       : Interactive Introduction to Psychometric Statistics  
+subtitle    : ...for Begginers 
+author      : N31k
+job         : Psychology Research
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [bootstrap, quiz, shiny, interactive]   
+mode        : selfcontained # {standalone, draft}
+ext_widgets: {rCharts: [libraries/nvd3]}
+---
+
+
+## Functionality
+
+User Controls Sample Size and Number of Samples
+Then they can See the Effect
+```{r}
+# Example Data
+inputSize <- 200; inputNSampl <- 150 ; inputNormal <- TRUE
+myPopulation <- if(inputNormal) rnorm(1e4) else rlnorm(1e4)
+smplMeans <- replicate(inputNSampl, {mean(sample(myPopulation, inputSize))} )
+```
+
+---
+```{r}
+hist(smplMeans, col='skyblue', main='Distribution of Sample Means', xlab='Red Line is the True Mean')
+abline(v=0, col ='red')
+```
+
+---
+
+## Correlation
+
+User adjusts the degree of correlation, then see that sample's Pearson r follows a t-like distribution.
+Also, compare NHST against 0 versus the true value. 
+```{r}
+# Example Data
+inputAssoc <- 0.5; myX <- rnorm(1e4) ; myY <- myX*inputAssoc+rnorm(1e4)
+smplCors <- replicate(inputNSampl, {
+  sam <- sample(1:1e4, inputSize); cor(myX[sam], myY[sam])
+})
+```
+
+---
+```{r}
+hist(smplCors, col='skyblue', main='Distribution of Sample Coefficients',
+     xlab = 'Red Line is the True Parameter')
+abline(v=inputAssoc, col = 'red')
+```
+
+
+
